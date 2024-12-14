@@ -1,0 +1,717 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>the mwa mwa quiz</title>
+<meta content="the chelpus quiz!!" property="og:title">
+<meta content="the chelpus quiz that was supposed to be monthsary edition but is like a week late T_T" property="og:description">
+<meta content="https://yanas-boyfriend.github.io" property="og:url" />
+<meta content="https://files.catbox.moe/8x5un9.jpg" property="og:image" />
+<meta content="#f18aec" data-react-helmet="true" name="theme-color" />
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="https://fonts.xz.style/serve/inter.css">
+<style>
+:root {
+	--nc-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+	--nc-font-mono: Consolas, monaco, 'Ubuntu Mono', 'Liberation Mono', 'Courier New', Courier, monospace;
+ 
+	/* Light theme */
+	--nc-tx-1: #7a617a;
+	--nc-tx-2: #7a617a;
+	--nc-bg-1: #ffede5;
+	--nc-bg-2: #F7D6DC;
+	--nc-bg-3: #BCA6B1;
+	--nc-lk-1: #f18aec;
+	--nc-lk-2: #fc39f2;
+	--nc-lk-tx: #FFFFFF;
+	--nc-ac-1: #FFC0CB;
+	--nc-ac-tx: #0C4047;
+}
+ 
+* {
+	/* Reset margins and padding */
+	margin: 0;
+	padding: 0;
+}
+ 
+address,
+area,
+article,
+aside,
+audio,
+blockquote,
+datalist,
+details,
+dl,
+fieldset,
+figure,
+form,
+input,
+iframe,
+img,
+meter,
+nav,
+ol,
+optgroup,
+option,
+output,
+p,
+pre,
+progress,
+ruby,
+section,
+table,
+textarea,
+ul,
+video {
+	/* Margins for most elements */
+	margin-bottom: 1rem;
+}
+ 
+html,input,select,button {
+	/* Set body font family and some finicky elements */
+	font-family: var(--nc-font-sans);
+}
+ 
+body {
+	/* Center body in page */
+	margin: 0 auto;
+	max-width: 750px;
+	padding: 2rem;
+	border-radius: 6px;
+	overflow-x: hidden;
+	word-break: break-word;
+	overflow-wrap: break-word;
+	background: var(--nc-bg-1);
+ 
+	/* Main body text */
+	color: var(--nc-tx-2);
+	font-size: 1.03rem;
+	line-height: 1.5;
+}
+ 
+::selection {
+	/* Set background color for selected text */
+	background: var(--nc-ac-1);
+	color: var(--nc-ac-tx);
+}
+ 
+h1,h2,h3,h4,h5,h6 {
+	line-height: 1;
+	color: var(--nc-tx-1);
+	padding-top: .875rem;
+}
+ 
+h1,
+h2,
+h3 {
+	color: var(--nc-tx-1);
+	padding-bottom: 2px;
+	margin-bottom: 8px;
+	border-bottom: 1px solid var(--nc-bg-2);
+}
+ 
+h4,
+h5,
+h6 {
+	margin-bottom: .3rem;
+}
+ 
+h1 {
+	font-size: 2.25rem;
+}
+ 
+h2 {
+	font-size: 1.85rem;
+}
+ 
+h3 {
+	font-size: 1.55rem;
+}
+ 
+h4 {
+	font-size: 1.25rem;
+}
+ 
+h5 {
+	font-size: 1rem;
+}
+ 
+h6 {
+	font-size: .875rem;
+}
+ 
+a {
+	color: var(--nc-lk-1);
+}
+ 
+a:hover {
+	color: var(--nc-lk-2);
+}
+ 
+abbr:hover {
+	/* Set the '?' cursor while hovering an abbreviation */
+	cursor: help;
+}
+ 
+blockquote {
+	padding: 1.5rem;
+	background: var(--nc-bg-2);
+	border-left: 5px solid var(--nc-bg-3);
+}
+ 
+abbr {
+	cursor: help;
+}
+ 
+blockquote *:last-child {
+	padding-bottom: 0;
+	margin-bottom: 0;
+}
+ 
+header {
+	background: var(--nc-bg-2);
+	border-bottom: 1px solid var(--nc-bg-3);
+	padding: 2rem 1.5rem;
+ 
+	/* This sets the right and left margins to cancel out the body's margins. It's width is still the same, but the background stretches across the page's width. */
+ 
+	margin: -2rem calc(50% - 50vw) 2rem;
+ 
+	/* Shorthand for:
+ 
+	margin-top: -2rem;
+	margin-bottom: 2rem;
+ 
+	margin-left: calc(50% - 50vw);
+	margin-right: calc(50% - 50vw); */
+ 
+	padding-left: calc(50vw - 50%);
+	padding-right: calc(50vw - 50%);
+}
+ 
+header h1,
+header h2,
+header h3 {
+	padding-bottom: 0;
+	border-bottom: 0;
+}
+ 
+header > *:first-child {
+	margin-top: 0;
+	padding-top: 0;
+}
+ 
+header > *:last-child {
+	margin-bottom: 0;
+}
+ 
+a button,
+button,
+input[type="submit"],
+input[type="reset"],
+input[type="button"] {
+	font-size: 1rem;
+	display: inline-block;
+	padding: 6px 12px;
+	text-align: center;
+	text-decoration: none;
+	white-space: nowrap;
+	background: var(--nc-bg-2);
+	color: var(--nc-tx-1);
+	border: 1px solid var(--nc-bg-3);
+	border-radius: 4px;
+	box-sizing: border-box;
+	cursor: pointer;
+}
+input[type="checkbox"] {
+  accent-color: #f87ff0;
+}
+ 
+a button[disabled],
+button[disabled],
+input[type="submit"][disabled],
+input[type="reset"][disabled],
+input[type="button"][disabled] {
+	cursor: default;
+	opacity: .5;
+ 
+	/* Set the [X] cursor while hovering a disabled link */
+	cursor: not-allowed;
+}
+ 
+.button:focus,
+.button:enabled:hover,
+button:focus,
+button:enabled:hover,
+input[type="submit"]:focus,
+input[type="submit"]:enabled:hover,
+input[type="reset"]:focus,
+input[type="reset"]:enabled:hover,
+input[type="button"]:focus,
+input[type="button"]:enabled:hover {
+	background: rgb(248, 197, 244);
+}
+ 
+a img {
+	margin-bottom: 0px;
+}
+ 
+code,
+pre,
+kbd,
+samp {
+	/* Set the font family for monospaced elements */
+	font-family: var(--nc-font-mono);
+}
+ 
+code,
+samp,
+kbd,
+pre {
+	/* The main preformatted style. This is changed slightly across different cases. */
+	background: var(--nc-bg-2);
+	border: 1px solid var(--nc-bg-3);
+	border-radius: 4px;
+	padding: 3px 6px;
+	/* ↓ font-size is relative to containing element, so it scales for titles*/
+	font-size: 0.9em;
+}
+ 
+kbd {
+	/* Makes the kbd element look like a keyboard key */
+	border-bottom: 3px solid var(--nc-bg-3);
+}
+ 
+pre {
+	padding: 1rem 1.4rem;
+	max-width: 100%;
+	overflow: auto;
+}
+ 
+pre code {
+	/* When <code> is in a <pre>, reset it's formatting to blend in */
+	background: inherit;
+	font-size: inherit;
+	color: inherit;
+	border: 0;
+	padding: 0;
+	margin: 0;
+}
+ 
+code pre {
+	/* When <pre> is in a <code>, reset it's formatting to blend in */
+	display: inline;
+	background: inherit;
+	font-size: inherit;
+	color: inherit;
+	border: 0;
+	padding: 0;
+	margin: 0;
+}
+ 
+details {
+	/* Make the <details> look more "clickable" */
+	padding: .6rem 1rem;
+	background: var(--nc-bg-2);
+	border: 1px solid var(--nc-bg-3);
+	border-radius: 4px;
+}
+ 
+summary {
+	/* Makes the <summary> look more like a "clickable" link with the pointer cursor */
+	cursor: pointer;
+	font-weight: bold;
+}
+ 
+details[open] {
+	/* Adjust the <details> padding while open */
+	padding-bottom: .75rem;
+}
+ 
+details[open] summary {
+	/* Adjust the <details> padding while open */
+	margin-bottom: 6px;
+}
+ 
+details[open]>*:last-child {
+	/* Resets the bottom margin of the last element in the <details> while <details> is opened. This prevents double margins/paddings. */
+	margin-bottom: 0;
+}
+ 
+dt {
+	font-weight: bold;
+}
+ 
+dd::before {
+	/* Add an arrow to data table definitions */
+	content: '→ ';
+}
+ 
+hr {
+	/* Reset the border of the <hr> separator, then set a better line */
+	border: 0;
+	border-bottom: 1px solid var(--nc-bg-3);
+	margin: 1rem auto;
+}
+ 
+fieldset {
+	margin-top: 1rem;
+	padding: 2rem;
+	border: 1px solid var(--nc-bg-3);
+	border-radius: 4px;
+}
+ 
+legend {
+	padding: auto .5rem;
+}
+ 
+table {
+	/* border-collapse sets the table's elements to share borders, rather than floating as separate "boxes". */
+	border-collapse: collapse;
+	width: 100%
+}
+ 
+td,
+th {
+	border: 1px solid var(--nc-bg-3);
+	text-align: left;
+	padding: .5rem;
+}
+ 
+th {
+	background: var(--nc-bg-2);
+}
+ 
+tr:nth-child(even) {
+	/* Set every other cell slightly darker. Improves readability. */
+	background: var(--nc-bg-2);
+}
+ 
+table caption {
+	font-weight: bold;
+	margin-bottom: .5rem;
+}
+ 
+textarea {
+	/* Don't let the <textarea> extend off the screen naturally or when dragged by the user */
+	max-width: 100%;
+}
+ 
+ol,
+ul {
+	/* Replace the browser default padding */
+	padding-left: 2rem;
+}
+ 
+li {
+	margin-top: .4rem;
+}
+ 
+ul ul,
+ol ul,
+ul ol,
+ol ol {
+	margin-bottom: 0;
+}
+ 
+mark {
+	padding: 3px 6px;
+	background: var(--nc-ac-1);
+	color: var(--nc-ac-tx);
+}
+ 
+textarea,
+select,
+input {
+	padding: 6px 12px;
+	margin-bottom: .5rem;
+	background: var(--nc-bg-2);
+	color: var(--nc-tx-2);
+	border: 1px solid var(--nc-bg-3);
+	border-radius: 4px;
+	box-shadow: none;
+	box-sizing: border-box;
+}
+textarea:focus, select:focus, input:focus {
+  border: 1px solid #f398ee;
+  outline: 0;
+}
+ 
+img {
+	max-width: 100%;
+}
+</style>
+</head>
+<body>
+<header>
+<h1>
+the chelpus quiz!! <img src="https://media.tenor.com/zBZnGatBkgAAAAAi/cute-girl.gif" style="margin-bottom:-2px;width: 40px;">
+</h1>
+</header>
+<img src="https://files.catbox.moe/vr6gf9.png">
+<p>
+hii babi ;3 this is the chelpus quiz! some of the questions here may be a little hard to answer, take ur time in answering and feel free to take breaks as it can get challenging!!<br><br>fun fact: i rewrote the questions as of 12:48 at midnight in Sat, 14 Dec because the old questions weren't the type of questions that i really wanted to ask, i removed parts like multiple choice and etc, this is now just an opinion based quiz!! this quiz went from 50 questions to 20 T_T<br><br>also u dont have to worry about losing ur progress, ur answers are auto saved and will be saved even if u close ur browser!!
+</p>
+<hr>
+<form id="form">
+<h2>quick reminder</h2>
+<p>
+<em>please remember that u are free to answer anything, there are no wrong answers and all answers are accepted!! this is more of an opinion based quiz!!</em>
+</p>
+<p>
+<label>Full name</label><br>
+<input type="text" name="fullname" placeholder="">
+</p>
+<p>
+<label>Birthday</label><br>
+<input type="text" name="birthday" placeholder="">
+</p>
+<p>
+<label>Complete address</label><br>
+<input type="text" name="address" placeholder=":3">
+</p>
+<hr>
+<br>
+<p>
+<label><b>1.</b> Without exaggeration and with pure honesty, how much would you rate how our <b>overall</b> relationship has been going, in terms of you being satisfied, happy and comforted?</label><br>
+<select style="width: 40%; margin-top: 7px;" name="1">
+<option>Pick!! :3</option>
+<option>1</option>
+<option>2</option>
+<option>3</option>
+<option>4</option>
+<option>5</option>
+<option>6</option>
+<option>7</option>
+<option>8</option>
+<option>9</option>
+<option>10</option>
+</select>
+</p>
+<br>
+<p>
+<label><b>2.</b> Also without exaggeration and with pure honesty, how much would you rate how our relationship has been going <b>recently</b>, in terms of you being satisfied, happy and comforted?</label><br>
+<select style="width: 40%; margin-top: 7px;" name="2">
+<option>Pick!! :3</option>
+<option>1</option>
+<option>2</option>
+<option>3</option>
+<option>4</option>
+<option>5</option>
+<option>6</option>
+<option>7</option>
+<option>8</option>
+<option>9</option>
+<option>10</option>
+</select>
+</p>
+<br>
+<p>
+<label><b>3.</b> How much have you been feeling pressured by the things that I say or make you want to do recently, or maybe how much have you been feeling of needing to make it up to me and be a "worthy girlfriend" that I deserve?</label><br>
+<select style="width: 40%; margin-top: 7px;" name="3">
+<option>Pick!! :3</option>
+<option>1</option>
+<option>2</option>
+<option>3</option>
+<option>4</option>
+<option>5</option>
+<option>6</option>
+<option>7</option>
+<option>8</option>
+<option>9</option>
+<option>10</option>
+</select>
+</p>
+<br>
+<p>
+<label><b>4.</b> Would you like to talk about some things that make you feel pressured? I would really appreciate any answer on this so that I can do my best to relieve the pressure, but it's absolutely okie if you don't want to talk about this! Always feel free to leave N/A!!</label><br>
+<textarea name="4" placeholder="" style="width: 100%; height: 150px; margin-top: 7px;"></textarea>
+</p>
+<br>
+<p>
+<label><b>5.</b> Has anything been bothering you recently in a negative way? I understand if this is something that you may not be comfortable enough to talk about, or if you feel like it is currently not the right time to talk this, feel free to leave N/A!!</label><br>
+<textarea name="5" placeholder="" style="width: 100%; height: 150px; margin-top: 7px;"></textarea>
+</p>
+<br>
+<p>
+<label><b>6.</b> When was the time that you appreciated the way I treated you the most, if there is any?</label><br>
+<textarea name="6" placeholder="" style="width: 100%; height: 150px; margin-top: 7px;"></textarea>
+</p>
+<br>
+<p>
+<label><b>7.</b> Is/Are there anything that you could suggest to me that would make you more happy and comfortable with your relationship with me, or would make our relationship more healthy?</label><br>
+<textarea name="7" placeholder="" style="width: 100%; height: 150px; margin-top: 7px;"></textarea>
+</p>
+<br>
+<p>
+<label><b>8.</b> Has things in our relationship been getting better or worse ever since we first confessed our love to each other?</label><br>
+<textarea name="8" placeholder="" style="width: 100%; height: 150px; margin-top: 7px;"></textarea>
+</p>
+<br>
+<p>
+<label><b>9.</b> Is/Are there anything that I have promised to do, but never did/forgot to do?</label><br>
+<textarea name="9" placeholder="" style="width: 100%; height: 150px; margin-top: 7px;"></textarea>
+</p>
+<br>
+<p>
+<label><b>10.</b> Do you feel like that I have downgraded from the personality that I used to have?</label><br>
+<textarea name="10" placeholder="" style="width: 100%; height: 150px; margin-top: 7px;"></textarea>
+</p>
+<br>
+<p>
+<label><b>11.</b> If your answer in question 10 is yes, could you name anything that you miss in my old personality, and you would love for me to have again without forcing myself to?</label><br>
+<textarea name="11" placeholder="" style="width: 100%; height: 150px; margin-top: 7px;"></textarea>
+</p>
+<br>
+<p>
+<label><b>12.</b> Is/Are there anything that you wish for me to do/say/make?</label><br>
+<textarea name="12" placeholder="" style="width: 100%; height: 150px; margin-top: 7px;"></textarea>
+</p>
+<br>
+<p>
+<label><b>13.</b> Do you feel the same kind of feeling that I feel, where the glowing butterflies in our relationship feels like it has lessened, mostly because of how I have been treating you recently?</label><br>
+<textarea name="13" placeholder="" style="width: 100%; height: 150px; margin-top: 7px;"></textarea>
+</p>
+<br>
+<p>
+<label><b>14.</b> Is/Are there anything that you would like for me to change in my current self, without forcing myself to?</label><br>
+<textarea name="14" placeholder="" style="width: 100%; height: 150px; margin-top: 7px;"></textarea>
+</p>
+<br>
+<p>
+<label><b>15.</b> What does 143 mean? <img src="https://media.tenor.com/9tu7uBdG1S8AAAAi/milk-and-mocha.gif" style="margin-bottom:-2px;width: 40px;"></label><br>
+<textarea name="15" placeholder="" style="width: 100%; height: 150px; margin-top: 7px;"></textarea>
+</p>
+<br>
+<p>
+<label><b>16.</b> Is/Are there anything in our relationship or anything that I have said/done that makes you feel like I might be being unfair to you?</label><br>
+<textarea name="16" placeholder="" style="width: 100%; height: 150px; margin-top: 7px;"></textarea>
+</p>
+<br>
+<p>
+<label><b>17.</b> Is/Are there anything that you feel like has been affecting me in a negative way, and you think that you should change in yourself to make me more happy?</label><br>
+<textarea name="17" placeholder="" style="width: 100%; height: 150px; margin-top: 7px;"></textarea>
+</p>
+<br>
+<p>
+<label><b>18.</b> If you have an answer for question 17, do you feel kind of pressured to do these changes, or feel scared that you may not be changing even if you wanted to?</label><br>
+<textarea name="18" placeholder="" style="width: 100%; height: 150px; margin-top: 7px;"></textarea>
+</p>
+<br>
+<p>
+<label><b>19.</b> Why is it that everytime I try to go to the bathroom to take a shit, Juan the Spider is always present in the bottom of the ocean, instead of being inside the motor which my father-in-law has been grieving in assistance of my life? Do you think it was necessary for me to interpret what it means to be the theorist?</label><br>
+<textarea name="19" placeholder="" style="width: 100%; height: 150px; margin-top: 7px;"></textarea>
+</p>
+<br>
+<p>
+<label><b>20.</b> Is there anything else that you would like to add, before submitting this wonderful quiz with questions that are totally not pressuring at all?</label><br>
+<textarea name="20" placeholder="" style="width: 100%; height: 150px; margin-top: 7px;"></textarea>
+</p>
+<hr>
+<br>
+<h1>
+the end.
+</h1>
+<p>
+hopefully that wasn't too hard T_T
+</p>
+<p>
+<em>
+by submitting ur answers, u agree to love ur babu forever ;3
+</em>
+</p>
+<p>
+<button id="submit" type="button">Submit!!</button>
+</p>
+</form>
+<div id="answer" style="display: none;">
+<h2>
+YAY! thanks for answering!!
+</h3>
+<p>
+since i dont have control over the backend server and i cant send HTTP requests to outside this site, pls copy the text below and send it to me, it has ur answers T_T<br><br>u can use the copy button below if its too long, then upload it to the site that the button besides it takes u
+</p>
+<textarea id="encodedJson" rows="10" cols="50" style="width: 100%; height: 500px;"></textarea>
+<button type="button" id="copy">Copy</button>
+<button type="button" onclick="javascript:window.location.href='https://www.toptal.com/developers/hastebin';">Upload here 😭</button>
+</div>
+<script>
+    // yea im using chatgpt but i dont really know javascript so im using gpt lmao i dont know anything about javascript
+    const form = document.getElementById('form');
+
+    // Load saved form data from localStorage
+    window.addEventListener('load', function() {
+        const savedData = JSON.parse(localStorage.getItem('formData')) || {};
+        
+        Object.keys(savedData).forEach(key => {
+            const field = form.elements[key];
+            if (field) {
+                if (field.type === 'radio' || field.type === 'checkbox') {
+                    field.checked = savedData[key] === field.value;
+                } else if (field.type === 'select-one') {
+                    field.value = savedData[key];
+                } else {
+                    field.value = savedData[key];
+                }
+            }
+        });
+    });
+
+    // Save form data to localStorage on change
+    form.addEventListener('input', function() {
+        const formData = {};
+        
+        Array.from(form.elements).forEach(field => {
+            if (field.name) {
+                if (field.type === 'radio' || field.type === 'checkbox') {
+                    if (field.checked) formData[field.name] = field.value;
+                } else {
+                    formData[field.name] = field.value;
+                }
+            }
+        });
+
+        localStorage.setItem('formData', JSON.stringify(formData));
+    });
+</script>
+<script>
+// yea im using chatgpt but i dont really know javascript so im using gpt lmao i dont know anything about javascript
+
+    document.getElementById('submit').addEventListener('click', function() {
+        const form = document.getElementById('form');
+        const formData = new FormData(form);
+        const jsonResult = {};
+
+        formData.forEach((value, key) => {
+            if (!jsonResult[key]) {
+                jsonResult[key] = value;
+            }
+        });
+
+        const jsonString = JSON.stringify(jsonResult);
+        const base64Encoded = btoa(jsonString);
+
+        const answerDiv = document.getElementById('answer');
+        const encodedJsonTextarea = document.getElementById('encodedJson');
+
+        answerDiv.style.display = 'block';
+        form.style.display = 'none';
+        encodedJsonTextarea.value = base64Encoded;
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    document.getElementById('copy').addEventListener('click', function() {
+        const input = document.getElementById('encodedJson');
+        input.select();
+        input.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(input.value).then(() => {
+            alert('should be copied now');
+        }).catch(() => {
+            alert('failed to copy :(');
+        });
+    });
+</script>
+</body>
+</html>
