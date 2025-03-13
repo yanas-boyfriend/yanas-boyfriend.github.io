@@ -1,49 +1,253 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bitcoin Price</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-        }
-        p {
-            font-size: 24px;
-            color: #333;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Bitcoin Payment</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #1e1e1e;
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .payment-card {
+      background-color: #2a2a2a;
+      width: 350px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Top bar (Pay with Bitcoin) */
+    .payment-header {
+      background-color: #2f403e;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 16px;
+    }
+
+    .payment-header span {
+      color: #ffa600;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+    .payment-header .payment-method {
+      color: #ffffff;
+      background-color: #ffa600;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      margin-left: auto;
+      margin-right: 10px;
+    }
+
+    .payment-header .time {
+      color: #ffffff;
+      font-size: 0.85rem;
+      opacity: 0.8;
+    }
+
+    /* Main content */
+    .payment-content {
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .status {
+      background-color: #333333;
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-weight: bold;
+      text-align: center;
+      font-size: 1.1rem;
+    }
+
+    .amount {
+      background-color: #333333;
+      padding: 8px 12px;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 0.9rem;
+    }
+
+    .amount .btc-value {
+      font-size: 1rem;
+      margin-bottom: 4px;
+      font-weight: bold;
+      color: #ffa600;
+    }
+
+    .amount .usd-value {
+      font-size: 0.85rem;
+      opacity: 0.8;
+    }
+
+    .address-section {
+      background-color: #333333;
+      padding: 8px 12px;
+      border-radius: 4px;
+    }
+
+    .address-title {
+      font-weight: bold;
+      margin-bottom: 4px;
+      font-size: 0.9rem;
+    }
+
+    .address-field {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      word-break: break-all;
+      font-size: 0.8rem;
+      margin-bottom: 8px;
+    }
+
+    .address-field .btc-address {
+      flex: 1;
+      margin-right: 8px;
+    }
+
+    button.copy-btn {
+      background-color: #ffa600;
+      border: none;
+      color: #000000;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+
+    button.copy-btn:hover {
+      background-color: #ffc14d;
+    }
+
+    /* "Open in wallet" button */
+    .wallet-btn {
+      background-color: #ffa600;
+      color: #000000;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 12px;
+      width: 100%;
+      text-align: center;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+
+    .wallet-btn:hover {
+      background-color: #ffc14d;
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 0.75rem;
+      margin-top: 8px;
+      opacity: 0.7;
+    }
+  </style>
 </head>
 <body>
-    <p id="price">Loading...</p>
+  <div class="payment-card">
+    <!-- Header -->
+    <div class="payment-header">
+      <span>CryptoPay</span>
+      <div class="payment-method">Bitcoin</div>
+      <div class="time" id="time">11:43</div>
+    </div>
 
-    <script>
-        // Function to fetch the Bitcoin price using a CORS proxy
-        async function fetchBitcoinPrice() {
-            const proxyUrl = 'https://cors-anywhere.herokuapp.com/'; // CORS proxy
-            const apiUrl = 'https://cryptorates.ai/v1/price/BTC';
+    <!-- Content -->
+    <div class="payment-content">
+      <!-- Status -->
+      <div class="status" id="status">Awaiting Payment...</div>
 
-            try {
-                const response = await fetch(proxyUrl + apiUrl);
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json();
-                document.getElementById('price').textContent = `Bitcoin Price: $${data.price}`;
-            } catch (error) {
-                console.error('There was a problem with the fetch operation:', error);
-                document.getElementById('price').textContent = 'Failed to load Bitcoin price.';
-            }
-        }
+      <!-- Amount -->
+      <div class="amount">
+        <div class="btc-value" id="btcValue">0.00000000 BTC</div>
+        <div class="usd-value" id="usdValue">$0.00</div>
+      </div>
 
-        // Call the function to fetch and display the Bitcoin price
-        fetchBitcoinPrice();
-    </script>
+      <!-- Address -->
+      <div class="address-section">
+        <div class="address-title">Send BTC to this address</div>
+        <div class="address-field">
+          <div class="btc-address" id="btcAddress">1YourBitcoinAddressHere123...</div>
+          <button class="copy-btn" id="copyBtn">Copy</button>
+        </div>
+      </div>
+
+      <!-- Open in wallet -->
+      <button class="wallet-btn">Open in wallet</button>
+      <div class="footer-note">Recommended fee: ~50 sat/byte</div>
+    </div>
+  </div>
+
+  <script>
+    // Example: If you want to display a certain amount of BTC to be paid,
+    // set it here (or retrieve from your own system).
+    const requiredBTC = 0.00012345;
+
+    // Elements to update
+    const btcValueEl = document.getElementById("btcValue");
+    const usdValueEl = document.getElementById("usdValue");
+
+    // 1) Fetch current BTC price from the cryptorates.ai API via corsproxy.io
+    fetch("https://corsproxy.io/?url=https://cryptorates.ai/v1/price/BTC")
+      .then(response => response.json())
+      .then(data => {
+        // The structure of the response may differ. Adjust accordingly.
+        // For example, if data is { "BTC": { "price": 27000 } }, do:
+        const currentBTCPrice = data.BTC.price; // in USD, if that's how the API returns it
+        const totalUSD = (currentBTCPrice * requiredBTC).toFixed(2);
+
+        // Update the display
+        btcValueEl.textContent = `${requiredBTC} BTC`;
+        usdValueEl.textContent = `$${totalUSD}`;
+      })
+      .catch(err => {
+        console.error("Error fetching BTC price:", err);
+      });
+
+    // 2) Simple Copy button for the BTC address
+    const copyBtn = document.getElementById("copyBtn");
+    const btcAddressEl = document.getElementById("btcAddress");
+    copyBtn.addEventListener("click", () => {
+      const address = btcAddressEl.textContent.trim();
+      navigator.clipboard.writeText(address)
+        .then(() => {
+          alert("BTC address copied to clipboard!");
+        })
+        .catch(err => {
+          console.error("Failed to copy address:", err);
+        });
+    });
+
+    // 3) (Optional) Show the current time or a countdown timer in the top right
+    function updateTime() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, "0");
+      const m = String(now.getMinutes()).padStart(2, "0");
+      document.getElementById("time").textContent = `${h}:${m}`;
+    }
+    updateTime();
+    setInterval(updateTime, 60000); // Update time every minute
+  </script>
 </body>
 </html>
