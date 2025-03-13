@@ -11,9 +11,9 @@
       font-family: Arial, sans-serif;
     }
 
+    /* Dark plain background */
     body {
-      /* Less boring background with a gradient */
-      background: linear-gradient(135deg, #141E30, #243B55);
+      background-color: #1e1e1e;
       color: #ffffff;
       display: flex;
       justify-content: center;
@@ -23,7 +23,7 @@
     }
 
     .payment-card {
-      background-color: rgba(0, 0, 0, 0.8);
+      background-color: #2a2a2a;
       width: 360px;
       border-radius: 8px;
       overflow: hidden;
@@ -103,10 +103,13 @@
     }
 
     .amount .btc-value {
+      display: flex;
+      align-items: center;
       font-size: 1rem;
       margin-bottom: 4px;
       font-weight: bold;
       color: #ffa600;
+      gap: 8px;
     }
 
     .amount .usd-value {
@@ -197,9 +200,12 @@
       <div class="countdown-timer" id="countdownTimer">Time left: 30:00</div>
       <div class="order-id" id="orderId"></div>
 
-      <!-- Amount -->
+      <!-- Amount (BTC + Copy button + USD) -->
       <div class="amount">
-        <div class="btc-value" id="btcValue">0.00000000 BTC</div>
+        <div class="btc-value">
+          <span id="btcValue">0.00000000 BTC</span>
+          <button class="copy-btn" id="copyBTCBtn">Copy</button>
+        </div>
         <div class="usd-value" id="usdValue">$0.00</div>
       </div>
 
@@ -219,7 +225,7 @@
   </div>
 
   <script>
-    // 1) Parse URL parameters
+    // 1) Parse URL parameters (?amount= and ?id=)
     const params = new URLSearchParams(window.location.search);
     const amountUSD = parseFloat(params.get("amount") || "0"); // e.g. ?amount=50
     const orderId = params.get("id") || "No ID Provided";      // e.g. ?id=ABC123
@@ -227,40 +233,35 @@
     // 2) Insert Order ID into the page
     document.getElementById("orderId").textContent = "Order ID: " + orderId;
 
-    // 3) Countdown Timer (30 minutes in seconds)
-    let timeRemaining = 30 * 60; // 30 minutes
+    // 3) Countdown Timer (30 minutes = 1800 seconds)
+    let timeRemaining = 30 * 60;
     const countdownTimerEl = document.getElementById("countdownTimer");
-
     const timerInterval = setInterval(() => {
       timeRemaining--;
       if (timeRemaining <= 0) {
         clearInterval(timerInterval);
         // Replace the entire page content
-        document.body.innerHTML = `
-          <h1 style="color: #fff; text-align:center; margin-top: 20%;">
-            It ran out of time
-          </h1>
-        `;
+        document.body.innerHTML =
+          '<h1 style="color: #fff; text-align:center; margin-top: 20%;">It ran out of time</h1>';
       } else {
         const minutes = Math.floor(timeRemaining / 60);
         const seconds = timeRemaining % 60;
         countdownTimerEl.textContent = 
-          \`Time left: \${minutes}:\${seconds.toString().padStart(2, '0')}\`;
+          "Time left: " + minutes + ":" + String(seconds).padStart(2, '0');
       }
     }, 1000);
 
-    // 4) Display current time in top-right (optional)
+    // 4) Show current time in top-right (optional)
     function updateTime() {
       const now = new Date();
       const h = String(now.getHours()).padStart(2, "0");
       const m = String(now.getMinutes()).padStart(2, "0");
-      document.getElementById("time").textContent = \`\${h}:\${m}\`;
+      document.getElementById("time").textContent = h + ":" + m;
     }
     updateTime();
     setInterval(updateTime, 60000);
 
     // 5) Fetch current BTC price and calculate how many BTC to send
-    //    (the API returns a price in USD for 1 BTC).
     const btcValueEl = document.getElementById("btcValue");
     const usdValueEl = document.getElementById("usdValue");
 
@@ -270,17 +271,19 @@
         // Example: data = { "BTC": { "price": 27000 } }
         const btcPriceUSD = data.BTC.price;
         // Convert the given USD amount to BTC
-        const requiredBTC = amountUSD / btcPriceUSD; 
+        const requiredBTC = amountUSD / btcPriceUSD;
+        // Format to 8 decimal places
         const btcStr = requiredBTC.toFixed(8);
+
         // Update display
-        btcValueEl.textContent = \`\${btcStr} BTC\`;
-        usdValueEl.textContent = \`$\${amountUSD.toFixed(2)}\`;
+        btcValueEl.textContent = btcStr + " BTC";
+        usdValueEl.textContent = "$" + amountUSD.toFixed(2);
       })
       .catch(err => {
         console.error("Error fetching BTC price:", err);
       });
 
-    // 6) Copy button
+    // 6) Copy button for BTC address
     const copyBtn = document.getElementById("copyBtn");
     const btcAddressEl = document.getElementById("btcAddress");
     copyBtn.addEventListener("click", () => {
@@ -291,6 +294,19 @@
         })
         .catch(err => {
           console.error("Failed to copy address:", err);
+        });
+    });
+
+    // 7) Copy button for the BTC amount
+    const copyBTCBtn = document.getElementById("copyBTCBtn");
+    copyBTCBtn.addEventListener("click", () => {
+      const amountToCopy = btcValueEl.textContent.trim(); // e.g. "0.00123456 BTC"
+      navigator.clipboard.writeText(amountToCopy)
+        .then(() => {
+          alert("BTC amount copied to clipboard!");
+        })
+        .catch(err => {
+          console.error("Failed to copy BTC amount:", err);
         });
     });
   </script>
