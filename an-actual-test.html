@@ -4,14 +4,6 @@
   <meta charset="UTF-8" />
   <title>Bitcoin Payment</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
-
-    /* Dark plain background */
     body {
       background-color: #1e1e1e;
       color: #ffffff;
@@ -19,295 +11,103 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      padding: 20px;
+      font-family: Arial, sans-serif;
     }
-
-    .payment-card {
+    .container {
+      text-align: center;
       background-color: #2a2a2a;
-      width: 360px;
+      padding: 20px;
       border-radius: 8px;
-      overflow: hidden;
       box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
-      display: flex;
-      flex-direction: column;
     }
-
-    .payment-header {
-      background-color: #2f403e;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 16px;
-    }
-
-    .payment-header span {
-      color: #ffa600;
-      font-weight: bold;
-      font-size: 1rem;
-    }
-
-    .payment-header .payment-method {
-      color: #ffffff;
-      background-color: #ffa600;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 0.85rem;
-      margin-left: auto;
-      margin-right: 10px;
-    }
-
-    .payment-header .time {
-      color: #ffffff;
-      font-size: 0.85rem;
-      opacity: 0.8;
-    }
-
-    .payment-content {
-      padding: 20px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .status {
-      background-color: #333333;
-      padding: 10px 12px;
-      border-radius: 4px;
-      font-weight: bold;
-      text-align: center;
-      font-size: 1rem;
-    }
-
-    .countdown-timer {
-      font-size: 0.9rem;
-      text-align: center;
-      margin-top: 8px;
-      opacity: 0.9;
-    }
-
     .order-id {
-      font-size: 0.9rem;
-      text-align: center;
-      margin-top: 8px;
       color: #ffa600;
-    }
-
-    .amount {
-      background-color: #333333;
-      padding: 8px 12px;
-      border-radius: 4px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-size: 0.9rem;
-    }
-
-    .amount .btc-value {
-      display: flex;
-      align-items: center;
       font-size: 1rem;
-      margin-bottom: 4px;
+      margin-bottom: 10px;
+    }
+    .countdown {
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+    .amount {
+      font-size: 1.2rem;
       font-weight: bold;
       color: #ffa600;
-      gap: 8px;
+      margin-bottom: 10px;
     }
-
-    .amount .usd-value {
-      font-size: 0.85rem;
-      opacity: 0.8;
-    }
-
-    .address-section {
-      background-color: #333333;
-      padding: 8px 12px;
-      border-radius: 4px;
-    }
-
-    .address-title {
-      font-weight: bold;
-      margin-bottom: 4px;
-      font-size: 0.9rem;
-    }
-
-    .address-field {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      word-break: break-all;
-      font-size: 0.8rem;
-      margin-bottom: 8px;
-    }
-
-    .address-field .btc-address {
-      flex: 1;
-      margin-right: 8px;
-    }
-
-    button.copy-btn {
+    .copy-btn {
       background-color: #ffa600;
       border: none;
       color: #000000;
-      padding: 4px 8px;
+      padding: 6px 10px;
       border-radius: 4px;
       cursor: pointer;
-      font-size: 0.8rem;
-    }
-
-    button.copy-btn:hover {
-      background-color: #ffc14d;
-    }
-
-    .wallet-btn {
-      background-color: #ffa600;
-      color: #000000;
-      border: none;
-      border-radius: 4px;
-      padding: 8px 12px;
-      width: 100%;
-      text-align: center;
-      cursor: pointer;
-      font-weight: bold;
       font-size: 0.9rem;
     }
-
-    .wallet-btn:hover {
+    .copy-btn:hover {
       background-color: #ffc14d;
-    }
-
-    .footer-note {
-      text-align: center;
-      font-size: 0.75rem;
-      margin-top: 8px;
-      opacity: 0.7;
     }
   </style>
 </head>
 <body>
-  <div class="payment-card">
-    <!-- Header -->
-    <div class="payment-header">
-      <span>CryptoPay</span>
-      <div class="payment-method">Bitcoin</div>
-      <div class="time" id="time">--:--</div>
-    </div>
-
-    <!-- Content -->
-    <div class="payment-content">
-      <!-- Status -->
-      <div class="status" id="status">Awaiting Payment...</div>
-
-      <!-- Countdown Timer & Order ID -->
-      <div class="countdown-timer" id="countdownTimer">Time left: 30:00</div>
-      <div class="order-id" id="orderId"></div>
-
-      <!-- Amount (BTC + Copy button + USD) -->
-      <div class="amount">
-        <div class="btc-value">
-          <span id="btcValue">0.00000000 BTC</span>
-          <button class="copy-btn" id="copyBTCBtn">Copy</button>
-        </div>
-        <div class="usd-value" id="usdValue">$0.00</div>
-      </div>
-
-      <!-- Address -->
-      <div class="address-section">
-        <div class="address-title">Send BTC to this address</div>
-        <div class="address-field">
-          <div class="btc-address" id="btcAddress">1YourBitcoinAddressHere123...</div>
-          <button class="copy-btn" id="copyBtn">Copy</button>
-        </div>
-      </div>
-
-      <!-- Open in wallet -->
-      <button class="wallet-btn">Open in wallet</button>
-      <div class="footer-note">Recommended fee: ~50 sat/byte</div>
+  <div class="container">
+    <div class="order-id" id="orderId">Order ID: Loading...</div>
+    <div class="countdown" id="countdownTimer">Time left: 30:00</div>
+    <div class="amount">
+      <span id="btcValue">Loading BTC...</span>
+      <button class="copy-btn" id="copyBTCBtn">Copy</button>
     </div>
   </div>
 
   <script>
-    // 1) Parse URL parameters (?amount= and ?id=)
+    // 1) Parse URL parameters
     const params = new URLSearchParams(window.location.search);
-    const amountUSD = parseFloat(params.get("amount") || "0"); // e.g. ?amount=50
-    const orderId = params.get("id") || "No ID Provided";      // e.g. ?id=ABC123
-
-    // 2) Insert Order ID into the page
+    const amountUSD = parseFloat(params.get("amount") || "0");
+    const orderId = params.get("id") || "No ID Provided";
+    
+    // Insert Order ID
     document.getElementById("orderId").textContent = "Order ID: " + orderId;
 
-    // 3) Countdown Timer (30 minutes = 1800 seconds)
+    // 2) Countdown Timer (30 minutes)
     let timeRemaining = 30 * 60;
     const countdownTimerEl = document.getElementById("countdownTimer");
     const timerInterval = setInterval(() => {
       timeRemaining--;
       if (timeRemaining <= 0) {
         clearInterval(timerInterval);
-        // Replace the entire page content
         document.body.innerHTML =
           '<h1 style="color: #fff; text-align:center; margin-top: 20%;">It ran out of time</h1>';
       } else {
         const minutes = Math.floor(timeRemaining / 60);
         const seconds = timeRemaining % 60;
-        countdownTimerEl.textContent = 
+        countdownTimerEl.textContent =
           "Time left: " + minutes + ":" + String(seconds).padStart(2, '0');
       }
     }, 1000);
 
-    // 4) Show current time in top-right (optional)
-    function updateTime() {
-      const now = new Date();
-      const h = String(now.getHours()).padStart(2, "0");
-      const m = String(now.getMinutes()).padStart(2, "0");
-      document.getElementById("time").textContent = h + ":" + m;
-    }
-    updateTime();
-    setInterval(updateTime, 60000);
-
-    // 5) Fetch current BTC price and calculate how many BTC to send
+    // 3) Fetch BTC price (Handles raw text response)
     const btcValueEl = document.getElementById("btcValue");
-    const usdValueEl = document.getElementById("usdValue");
 
     fetch("https://corsproxy.io/?url=https://cryptorates.ai/v1/price/BTC")
-      .then(response => response.json())
-      .then(data => {
-        // Example: data = { "BTC": { "price": 27000 } }
-        const btcPriceUSD = data.BTC.price;
-        // Convert the given USD amount to BTC
+      .then(response => response.text()) // Get raw text instead of JSON
+      .then(priceText => {
+        const btcPriceUSD = parseFloat(priceText.trim()); // Convert raw text to number
         const requiredBTC = amountUSD / btcPriceUSD;
-        // Format to 8 decimal places
-        const btcStr = requiredBTC.toFixed(8);
-
-        // Update display
-        btcValueEl.textContent = btcStr + " BTC";
-        usdValueEl.textContent = "$" + amountUSD.toFixed(2);
+        const btcStr = requiredBTC.toFixed(8); // Format to 8 decimals
+        btcValueEl.textContent = btcStr + " BTC"; // Show BTC amount
       })
       .catch(err => {
         console.error("Error fetching BTC price:", err);
+        btcValueEl.textContent = "Error loading BTC price";
       });
 
-    // 6) Copy button for BTC address
-    const copyBtn = document.getElementById("copyBtn");
-    const btcAddressEl = document.getElementById("btcAddress");
-    copyBtn.addEventListener("click", () => {
-      const address = btcAddressEl.textContent.trim();
-      navigator.clipboard.writeText(address)
-        .then(() => {
-          alert("BTC address copied to clipboard!");
-        })
-        .catch(err => {
-          console.error("Failed to copy address:", err);
-        });
-    });
-
-    // 7) Copy button for the BTC amount
+    // 4) Copy BTC amount (only number, without "BTC")
     const copyBTCBtn = document.getElementById("copyBTCBtn");
     copyBTCBtn.addEventListener("click", () => {
-      const amountToCopy = btcValueEl.textContent.trim(); // e.g. "0.00123456 BTC"
-      navigator.clipboard.writeText(amountToCopy)
-        .then(() => {
-          alert("BTC amount copied to clipboard!");
-        })
-        .catch(err => {
-          console.error("Failed to copy BTC amount:", err);
-        });
+      const btcAmount = btcValueEl.textContent.split(" ")[0]; // Extract only the number
+      navigator.clipboard.writeText(btcAmount)
+        .then(() => alert("BTC amount copied!"))
+        .catch(err => console.error("Failed to copy:", err));
     });
   </script>
 </body>
