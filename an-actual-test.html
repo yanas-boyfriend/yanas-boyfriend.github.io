@@ -12,23 +12,26 @@
     }
 
     body {
-      background-color: #1e1e1e;
+      /* Less boring background with a gradient */
+      background: linear-gradient(135deg, #141E30, #243B55);
       color: #ffffff;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
+      padding: 20px;
     }
 
     .payment-card {
-      background-color: #2a2a2a;
-      width: 350px;
+      background-color: rgba(0, 0, 0, 0.8);
+      width: 360px;
       border-radius: 8px;
       overflow: hidden;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
     }
 
-    /* Top bar (Pay with Bitcoin) */
     .payment-header {
       background-color: #2f403e;
       display: flex;
@@ -59,7 +62,6 @@
       opacity: 0.8;
     }
 
-    /* Main content */
     .payment-content {
       padding: 20px 16px;
       display: flex;
@@ -69,11 +71,25 @@
 
     .status {
       background-color: #333333;
-      padding: 8px 12px;
+      padding: 10px 12px;
       border-radius: 4px;
       font-weight: bold;
       text-align: center;
-      font-size: 1.1rem;
+      font-size: 1rem;
+    }
+
+    .countdown-timer {
+      font-size: 0.9rem;
+      text-align: center;
+      margin-top: 8px;
+      opacity: 0.9;
+    }
+
+    .order-id {
+      font-size: 0.9rem;
+      text-align: center;
+      margin-top: 8px;
+      color: #ffa600;
     }
 
     .amount {
@@ -138,7 +154,6 @@
       background-color: #ffc14d;
     }
 
-    /* "Open in wallet" button */
     .wallet-btn {
       background-color: #ffa600;
       color: #000000;
@@ -170,13 +185,17 @@
     <div class="payment-header">
       <span>CryptoPay</span>
       <div class="payment-method">Bitcoin</div>
-      <div class="time" id="time">11:43</div>
+      <div class="time" id="time">--:--</div>
     </div>
 
     <!-- Content -->
     <div class="payment-content">
       <!-- Status -->
       <div class="status" id="status">Awaiting Payment...</div>
+
+      <!-- Countdown Timer & Order ID -->
+      <div class="countdown-timer" id="countdownTimer">Time left: 30:00</div>
+      <div class="order-id" id="orderId"></div>
 
       <!-- Amount -->
       <div class="amount">
@@ -200,32 +219,68 @@
   </div>
 
   <script>
-    // Example: If you want to display a certain amount of BTC to be paid,
-    // set it here (or retrieve from your own system).
-    const requiredBTC = 0.00012345;
+    // 1) Parse URL parameters
+    const params = new URLSearchParams(window.location.search);
+    const amountUSD = parseFloat(params.get("amount") || "0"); // e.g. ?amount=50
+    const orderId = params.get("id") || "No ID Provided";      // e.g. ?id=ABC123
 
-    // Elements to update
+    // 2) Insert Order ID into the page
+    document.getElementById("orderId").textContent = "Order ID: " + orderId;
+
+    // 3) Countdown Timer (30 minutes in seconds)
+    let timeRemaining = 30 * 60; // 30 minutes
+    const countdownTimerEl = document.getElementById("countdownTimer");
+
+    const timerInterval = setInterval(() => {
+      timeRemaining--;
+      if (timeRemaining <= 0) {
+        clearInterval(timerInterval);
+        // Replace the entire page content
+        document.body.innerHTML = `
+          <h1 style="color: #fff; text-align:center; margin-top: 20%;">
+            It ran out of time
+          </h1>
+        `;
+      } else {
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        countdownTimerEl.textContent = 
+          \`Time left: \${minutes}:\${seconds.toString().padStart(2, '0')}\`;
+      }
+    }, 1000);
+
+    // 4) Display current time in top-right (optional)
+    function updateTime() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, "0");
+      const m = String(now.getMinutes()).padStart(2, "0");
+      document.getElementById("time").textContent = \`\${h}:\${m}\`;
+    }
+    updateTime();
+    setInterval(updateTime, 60000);
+
+    // 5) Fetch current BTC price and calculate how many BTC to send
+    //    (the API returns a price in USD for 1 BTC).
     const btcValueEl = document.getElementById("btcValue");
     const usdValueEl = document.getElementById("usdValue");
 
-    // 1) Fetch current BTC price from the cryptorates.ai API via corsproxy.io
     fetch("https://corsproxy.io/?url=https://cryptorates.ai/v1/price/BTC")
       .then(response => response.json())
       .then(data => {
-        // The structure of the response may differ. Adjust accordingly.
-        // For example, if data is { "BTC": { "price": 27000 } }, do:
-        const currentBTCPrice = data.BTC.price; // in USD, if that's how the API returns it
-        const totalUSD = (currentBTCPrice * requiredBTC).toFixed(2);
-
-        // Update the display
-        btcValueEl.textContent = `${requiredBTC} BTC`;
-        usdValueEl.textContent = `$${totalUSD}`;
+        // Example: data = { "BTC": { "price": 27000 } }
+        const btcPriceUSD = data.BTC.price;
+        // Convert the given USD amount to BTC
+        const requiredBTC = amountUSD / btcPriceUSD; 
+        const btcStr = requiredBTC.toFixed(8);
+        // Update display
+        btcValueEl.textContent = \`\${btcStr} BTC\`;
+        usdValueEl.textContent = \`$\${amountUSD.toFixed(2)}\`;
       })
       .catch(err => {
         console.error("Error fetching BTC price:", err);
       });
 
-    // 2) Simple Copy button for the BTC address
+    // 6) Copy button
     const copyBtn = document.getElementById("copyBtn");
     const btcAddressEl = document.getElementById("btcAddress");
     copyBtn.addEventListener("click", () => {
@@ -238,16 +293,6 @@
           console.error("Failed to copy address:", err);
         });
     });
-
-    // 3) (Optional) Show the current time or a countdown timer in the top right
-    function updateTime() {
-      const now = new Date();
-      const h = String(now.getHours()).padStart(2, "0");
-      const m = String(now.getMinutes()).padStart(2, "0");
-      document.getElementById("time").textContent = `${h}:${m}`;
-    }
-    updateTime();
-    setInterval(updateTime, 60000); // Update time every minute
   </script>
 </body>
 </html>
